@@ -67,8 +67,10 @@ s16 set_mario_animation(struct MarioState *m, s32 targetAnimID) {
     struct Animation *targetAnim = m->animation->targetAnim;
 
     if (load_patchable_table(m->animation, targetAnimID)) {
-        targetAnim->values = (void *) VIRTUAL_TO_PHYSICAL((u8 *) targetAnim + (uintptr_t) targetAnim->values);
-        targetAnim->index = (void *) VIRTUAL_TO_PHYSICAL((u8 *) targetAnim + (uintptr_t) targetAnim->index);
+        targetAnim->values =
+            (void *) VIRTUAL_TO_PHYSICAL((u8 *) targetAnim + (uintptr_t) targetAnim->values);
+        targetAnim->index =
+            (void *) VIRTUAL_TO_PHYSICAL((u8 *) targetAnim + (uintptr_t) targetAnim->index);
     }
 
     if (o->header.gfx.unk38.animID != targetAnimID) {
@@ -100,8 +102,10 @@ s16 set_mario_anim_with_accel(struct MarioState *m, s32 targetAnimID, s32 accel)
     struct Animation *targetAnim = m->animation->targetAnim;
 
     if (load_patchable_table(m->animation, targetAnimID)) {
-        targetAnim->values = (void *) VIRTUAL_TO_PHYSICAL((u8 *) targetAnim + (uintptr_t) targetAnim->values);
-        targetAnim->index = (void *) VIRTUAL_TO_PHYSICAL((u8 *) targetAnim + (uintptr_t) targetAnim->index);
+        targetAnim->values =
+            (void *) VIRTUAL_TO_PHYSICAL((u8 *) targetAnim + (uintptr_t) targetAnim->values);
+        targetAnim->index =
+            (void *) VIRTUAL_TO_PHYSICAL((u8 *) targetAnim + (uintptr_t) targetAnim->index);
     }
 
     if (o->header.gfx.unk38.animID != targetAnimID) {
@@ -351,9 +355,10 @@ void play_mario_heavy_landing_sound_once(struct MarioState *m, u32 soundBits) {
  */
 void play_mario_sound(struct MarioState *m, s32 actionSound, s32 marioSound) {
     if (actionSound == SOUND_ACTION_TERRAIN_JUMP) {
-        play_mario_action_sound(
-                m, (m->flags & MARIO_METAL_CAP) ? (s32)SOUND_ACTION_METAL_JUMP
-                                                : (s32)SOUND_ACTION_TERRAIN_JUMP, 1);
+        play_mario_action_sound(m,
+                                (m->flags & MARIO_METAL_CAP) ? (s32) SOUND_ACTION_METAL_JUMP
+                                                             : (s32) SOUND_ACTION_TERRAIN_JUMP,
+                                1);
     } else {
         play_sound_if_no_flag(m, actionSound, MARIO_ACTION_SOUND_PLAYED);
     }
@@ -1695,7 +1700,7 @@ void func_sh_8025574C(void) {
     } else if (gMarioState->particleFlags & PARTICLE_TRIANGLE) {
         queue_rumble_data(5, 80);
     }
-    if(gMarioState->heldObj && gMarioState->heldObj->behavior == segmented_to_virtual(bhvBobomb)) {
+    if (gMarioState->heldObj && gMarioState->heldObj->behavior == segmented_to_virtual(bhvBobomb)) {
         reset_rumble_timers();
     }
 }
@@ -1899,4 +1904,10 @@ void init_mario_from_save_file(void) {
 
     gHudDisplay.coins = 0;
     gHudDisplay.wedges = 8;
+}
+
+void launch_fire_flower_projectile(void) {
+    play_sound(SOUND_AIR_BOWSER_SPIT_FIRE, gMarioObject->header.gfx.pos);
+    spawn_object_relative_with_scale(0, 0, 150, 0, 1.5f, gMarioObject, MODEL_RED_FLAME,
+                                     bhvFireFlowerProjectile);
 }

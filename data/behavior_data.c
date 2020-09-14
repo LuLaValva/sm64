@@ -1,3 +1,5 @@
+// clang-format off
+
 #define OBJECT_FIELDS_INDEX_DIRECTLY
 
 #include "sm64.h"
@@ -6107,3 +6109,13 @@ const BehaviorScript bhvIntroScene[] = {
 };
 
 
+const BehaviorScript bhvFireFlowerProjectile[] = {
+    BEGIN(OBJ_LIST_DESTRUCTIVE),
+    OR_INT(oFlags, OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    BILLBOARD(),
+    CALL_NATIVE(bhv_fire_flower_projectile_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_fire_flower_projectile_loop),
+        ADD_INT(oAnimState, 1),
+    END_LOOP(),
+};

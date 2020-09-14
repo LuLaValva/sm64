@@ -15,7 +15,8 @@ void vec3f_copy_2(Vec3f dest, Vec3f src);
 void tox_box_move(f32 forwardVel, f32 a1, s16 deltaPitch, s16 deltaRoll);
 void play_penguin_walking_sound(s32 walk);
 s32 update_angle_from_move_flags(s32 *angle);
-void cur_obj_spawn_strong_wind_particles(s32 windSpread, f32 scale, f32 relPosX, f32 relPosY, f32 relPosZ);
+void cur_obj_spawn_strong_wind_particles(s32 windSpread, f32 scale, f32 relPosX, f32 relPosY,
+                                         f32 relPosZ);
 
 void bhv_cap_switch_loop(void);
 void bhv_tiny_star_particles_init(void);
@@ -551,6 +552,8 @@ void bhv_intro_scene_loop(void);
 void bhv_dust_smoke_loop(void);
 void bhv_yoshi_loop(void);
 void bhv_volcano_trap_loop(void);
+void bhv_fire_flower_projectile_init(void);
+void bhv_fire_flower_projectile_loop(void);
 
 Gfx *geo_move_mario_part_from_parent(s32 run, UNUSED struct GraphNode *node, Mat4 mtx);
 

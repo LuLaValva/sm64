@@ -154,8 +154,12 @@ s32 act_punching(struct MarioState *m) {
         return check_common_action_exits(m);
     }
 
-    if (m->actionState == 0 && (m->input & INPUT_A_DOWN)) {
-        return set_mario_action(m, ACT_JUMP_KICK, 0);
+    if (m->actionState == 0) {
+        if (m->input & INPUT_A_DOWN) {
+            return set_mario_action(m, ACT_JUMP_KICK, 0);
+        } else {
+            launch_fire_flower_projectile();
+        }
     }
 
     m->actionState = 1;
