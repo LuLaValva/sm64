@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef TYPES_H
 #define TYPES_H
 
@@ -344,6 +346,7 @@ struct MarioState
     /*0xBC*/ f32 peakHeight;
     /*0xC0*/ f32 quicksandDepth;
     /*0xC4*/ f32 unkC4;
+             u8 marioPowerup;
 };
 
 #endif // TYPES_H

@@ -554,6 +554,8 @@ void bhv_yoshi_loop(void);
 void bhv_volcano_trap_loop(void);
 void bhv_fire_flower_projectile_init(void);
 void bhv_fire_flower_projectile_loop(void);
+void bhv_fire_flower_powerup_init(void);
+void bhv_fire_flower_powerup_loop(void);
 
 Gfx *geo_move_mario_part_from_parent(s32 run, UNUSED struct GraphNode *node, Mat4 mtx);
 

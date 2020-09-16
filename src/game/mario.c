@@ -1493,6 +1493,7 @@ void update_mario_health(struct MarioState *m) {
         if (m->hurtCounter > 0) {
             m->health -= 0x40;
             m->hurtCounter--;
+            m->marioPowerup = MARIO_POWERUP_NONE;
         }
 
         if (m->health >= 0x881) {
@@ -1830,6 +1831,7 @@ void init_mario(void) {
     gMarioState->heldObj = NULL;
     gMarioState->riddenObj = NULL;
     gMarioState->usedObj = NULL;
+    gMarioState->marioPowerup = MARIO_POWERUP_NONE;
 
     gMarioState->waterLevel =
         find_water_level(gMarioSpawnInfo->startPos[0], gMarioSpawnInfo->startPos[2]);
@@ -1907,7 +1909,9 @@ void init_mario_from_save_file(void) {
 }
 
 void launch_fire_flower_projectile(void) {
-    play_sound(SOUND_AIR_BOWSER_SPIT_FIRE, gMarioObject->header.gfx.pos);
-    spawn_object_relative_with_scale(0, 0, 150, 0, 1.5f, gMarioObject, MODEL_RED_FLAME,
-                                     bhvFireFlowerProjectile);
+    if (gMarioState->marioPowerup == MARIO_POWERUP_FIRE_FLOWER) {
+        play_sound(SOUND_AIR_BOWSER_SPIT_FIRE, gMarioObject->header.gfx.pos);
+        spawn_object_relative_with_scale(0, 0, 150, 0, 1.5f, gMarioObject, MODEL_RED_FLAME,
+                                         bhvFireFlowerProjectile);
+    }
 }

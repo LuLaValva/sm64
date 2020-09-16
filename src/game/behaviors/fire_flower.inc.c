@@ -10,6 +10,18 @@ struct ObjectHitbox sFireFlowerProjectileHitbox = {
     /* hurtboxHeight:     */ 0,
 };
 
+struct ObjectHitbox sFireFlowerPowerupHitbox = {
+    /* interactType:      */ INTERACT_POWERUP,
+    /* downOffset:        */ 0,
+    /* damageOrCoinValue: */ 0,
+    /* health:            */ 0,
+    /* numLootCoins:      */ 0,
+    /* radius:            */ 50,
+    /* height:            */ 50,
+    /* hurtboxRadius:     */ 0,
+    /* hurtboxHeight:     */ 0,
+};
+
 void bhv_fire_flower_projectile_init(void) {
     o->oForwardVel = 30.0f;
     o->oVelY = -o->oForwardVel;
@@ -29,5 +41,19 @@ void bhv_fire_flower_projectile_loop(void) {
 
     if ((o->oVelY -= 3) < -o->oForwardVel) {
         o->oVelY = -o->oForwardVel;
+    }
+}
+
+void bhv_fire_flower_powerup_init(void) {
+    obj_set_hitbox(o, &sFireFlowerPowerupHitbox);
+}
+
+void bhv_fire_flower_powerup_loop(void) {
+    if (o->oDistanceToMario < 1000.0f) {
+        o->oMoveAngleYaw = approach_s16_symmetric(o->oMoveAngleYaw, o->oAngleToMario, 0x140);
+    }
+
+    if (o->oInteractStatus & INT_STATUS_INTERACTED) {
+        obj_mark_for_deletion(o);
     }
 }

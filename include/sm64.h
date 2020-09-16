@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef SM64_H
 #define SM64_H
 
@@ -431,3 +433,6 @@
 #define C_BUTTONS     (U_CBUTTONS | D_CBUTTONS | L_CBUTTONS | R_CBUTTONS   )
 
 #endif // SM64_H
+
+#define MARIO_POWERUP_NONE 0
+#define MARIO_POWERUP_FIRE_FLOWER 1
