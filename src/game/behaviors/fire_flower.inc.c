@@ -23,7 +23,7 @@ struct ObjectHitbox sFireFlowerPowerupHitbox = {
 };
 
 void bhv_fire_flower_projectile_init(void) {
-    o->oForwardVel = 30.0f;
+    o->oForwardVel = 40.0f;
     o->oVelY = -o->oForwardVel;
     obj_set_hitbox(o, &sFireFlowerProjectileHitbox);
 }
@@ -42,7 +42,7 @@ void bhv_fire_flower_projectile_loop(void) {
         o->oVelY = o->oForwardVel;
     }
 
-    if ((o->oVelY -= 3) < -o->oForwardVel) {
+    if ((o->oVelY -= 6) < -o->oForwardVel) {
         o->oVelY = -o->oForwardVel;
     }
 }
