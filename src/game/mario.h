@@ -51,5 +51,11 @@ s32 execute_mario_action(UNUSED struct Object *o);
 void init_mario(void);
 void init_mario_from_save_file(void);
 void launch_fire_flower_projectile(void);
+u8 set_mario_powerup(struct MarioState *m, u8 powerup);
+
+extern Lights1 mario_blue_lights_group;
+extern Lights1 mario_red_lights_group;
+extern Lights1 mario_white_lights_group;
+extern Lights1 mario_brown1_lights_group;
 
 #endif // MARIO_H

@@ -1756,9 +1756,9 @@ u32 interact_text(struct MarioState *m, UNUSED u32 interactType, struct Object *
 }
 
 u32 interact_powerup(struct MarioState *m, UNUSED u32 interactType, struct Object *o) {
-    m->marioPowerup = get_mario_powerup_flag(o);
+    set_mario_powerup(m, get_mario_powerup_flag(o));
     o->oInteractStatus = INT_STATUS_INTERACTED;
-    play_sound(SOUND_MARIO_HERE_WE_GO, m->marioObj->header.gfx.pos);
+    play_sound(SOUND_MARIO_HERE_WE_GO, m->marioObj->header.gfx.cameraToObject);
 }
 
 void check_kick_or_punch_wall(struct MarioState *m) {

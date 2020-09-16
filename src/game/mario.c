@@ -1493,7 +1493,7 @@ void update_mario_health(struct MarioState *m) {
         if (m->hurtCounter > 0) {
             m->health -= 0x40;
             m->hurtCounter--;
-            m->marioPowerup = MARIO_POWERUP_NONE;
+            set_mario_powerup(m, MARIO_POWERUP_NONE);
         }
 
         if (m->health >= 0x881) {
@@ -1534,6 +1534,52 @@ void update_mario_info_for_cam(struct MarioState *m) {
     }
 }
 
+/**
+ * Changes a light group into a new color
+ */
+void set_light_group_color(Lights1 *lightsGroup, Lights1 *newColor) {
+    Lights1 *destination = segmented_to_virtual(lightsGroup);
+    u8 i;
+    for (i = 0; i < 3; i++) {
+        destination->l[0].l.col[i] = newColor->l[0].l.col[i];
+        destination->l[0].l.colc[i] = newColor->l[0].l.colc[i];
+        destination->a.l.col[i] = newColor->a.l.col[i];
+        destination->a.l.colc[i] = newColor->a.l.colc[i];
+    }
+}
+
+void set_mario_clothes(Lights1 *shoes, Lights1 *overalls, Lights1 *gloves, Lights1 *hatandshirt) {
+    set_light_group_color(&mario_brown1_lights_group, shoes);
+    set_light_group_color(&mario_blue_lights_group, overalls);
+    set_light_group_color(&mario_white_lights_group, gloves);
+    set_light_group_color(&mario_red_lights_group, hatandshirt);
+}
+
+static Lights1 mario_default_light_blue = gdSPDefLights1(
+    /* ambient */ 0x00, 0x00, 0x7f, /* diffuse */ 0x00, 0x00, 0xff, 0x28, 0x28, 0x28); // Blue
+static Lights1 mario_default_light_red = gdSPDefLights1(
+    /* ambient */ 0x7f, 0x00, 0x00, /* diffuse */ 0xff, 0x00, 0x00, 0x28, 0x28, 0x28); // Red
+static Lights1 mario_default_light_white = gdSPDefLights1(
+    /* ambient */ 0x7f, 0x7f, 0x7f, /* diffuse */ 0xff, 0xff, 0xff, 0x28, 0x28, 0x28); // White
+static Lights1 mario_default_light_brown1 = gdSPDefLights1(
+    /* ambient */ 0x39, 0x0e, 0x07, /* diffuse */ 0x72, 0x1c, 0x0e, 0x28, 0x28, 0x28); // brown
+/**
+ * Updates Mario's clothing color based on powerup
+ */
+void update_mario_clothing(struct MarioState *m) {
+    switch (m->marioPowerup) {
+        case MARIO_POWERUP_NONE:
+            set_mario_clothes(&mario_default_light_brown1, &mario_default_light_blue,
+                              &mario_default_light_white, &mario_default_light_red);
+            break;
+        case MARIO_POWERUP_FIRE_FLOWER:
+            set_mario_clothes(&mario_default_light_brown1, &mario_default_light_red,
+                              &mario_default_light_white, &mario_default_light_white);
+            break;
+        default:
+            break;
+    }
+}
 /**
  * Resets Mario's model, done every time an action is executed.
  */
@@ -1831,7 +1877,7 @@ void init_mario(void) {
     gMarioState->heldObj = NULL;
     gMarioState->riddenObj = NULL;
     gMarioState->usedObj = NULL;
-    gMarioState->marioPowerup = MARIO_POWERUP_NONE;
+    set_mario_powerup(gMarioState, MARIO_POWERUP_NONE);
 
     gMarioState->waterLevel =
         find_water_level(gMarioSpawnInfo->startPos[0], gMarioSpawnInfo->startPos[2]);
@@ -1908,9 +1954,18 @@ void init_mario_from_save_file(void) {
     gHudDisplay.wedges = 8;
 }
 
+u8 set_mario_powerup(struct MarioState *m, u8 powerup) {
+    if (m->marioPowerup != powerup) {
+        m->marioPowerup = powerup;
+        update_mario_clothing(m);
+        return TRUE;
+    }
+    return FALSE;
+}
+
 void launch_fire_flower_projectile(void) {
     if (gMarioState->marioPowerup == MARIO_POWERUP_FIRE_FLOWER) {
-        play_sound(SOUND_AIR_BOWSER_SPIT_FIRE, gMarioObject->header.gfx.pos);
+        play_sound(SOUND_AIR_BOWSER_SPIT_FIRE, gMarioObject->header.gfx.cameraToObject);
         spawn_object_relative_with_scale(0, 0, 150, 0, 1.5f, gMarioObject, MODEL_RED_FLAME,
                                          bhvFireFlowerProjectile);
     }
