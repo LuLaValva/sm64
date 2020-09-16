@@ -35,6 +35,9 @@ void bhv_fire_flower_projectile_loop(void) {
     if (obj_attack_collided_from_other_object(o) || o->oMoveFlags & OBJ_MOVE_HIT_WALL) {
         spawn_mist_particles_with_sound(SOUND_OBJ_DEFAULT_DEATH);
         mark_obj_for_deletion(o);
+    } else if (find_water_level(o->oPosX, o->oPosZ) > o->oPosY) {
+        spawn_mist_particles_with_sound(SOUND_GENERAL_FLAME_OUT);
+        mark_obj_for_deletion(o);
     } else if (!(o->oFloorHeight < o->oPosY)) {
         o->oVelY = o->oForwardVel;
     }
@@ -46,9 +49,11 @@ void bhv_fire_flower_projectile_loop(void) {
 
 void bhv_fire_flower_powerup_init(void) {
     obj_set_hitbox(o, &sFireFlowerPowerupHitbox);
+    o->oGravity = 2.4f;
 }
 
 void bhv_fire_flower_powerup_loop(void) {
+    object_step();
     if (o->oDistanceToMario < 1000.0f) {
         o->oMoveAngleYaw = approach_s16_symmetric(o->oMoveAngleYaw, o->oAngleToMario, 0x140);
     }
