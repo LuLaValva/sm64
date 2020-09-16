@@ -1877,7 +1877,6 @@ void init_mario(void) {
     gMarioState->heldObj = NULL;
     gMarioState->riddenObj = NULL;
     gMarioState->usedObj = NULL;
-    set_mario_powerup(gMarioState, MARIO_POWERUP_NONE);
 
     gMarioState->waterLevel =
         find_water_level(gMarioSpawnInfo->startPos[0], gMarioSpawnInfo->startPos[2]);
@@ -1952,6 +1951,7 @@ void init_mario_from_save_file(void) {
 
     gHudDisplay.coins = 0;
     gHudDisplay.wedges = 8;
+    set_mario_powerup(gMarioState, MARIO_POWERUP_NONE);
 }
 
 u8 set_mario_powerup(struct MarioState *m, u8 powerup) {
